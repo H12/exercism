@@ -3,4 +3,36 @@ module Raindrops exposing (raindrops)
 
 raindrops : Int -> String
 raindrops number =
-    Debug.todo "Please implement this function"
+    let
+        output =
+            pling number ++ plang number ++ plong number
+    in
+    if String.length output == 0 then
+        String.fromInt number
+
+    else
+        output
+
+
+pling : Int -> String
+pling =
+    noise 3 "Pling"
+
+
+plang : Int -> String
+plang =
+    noise 5 "Plang"
+
+
+plong : Int -> String
+plong =
+    noise 7 "Plong"
+
+
+noise : Int -> String -> Int -> String
+noise mod sound number =
+    if modBy mod number == 0 then
+        sound
+
+    else
+        ""
