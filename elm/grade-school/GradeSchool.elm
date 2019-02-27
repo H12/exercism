@@ -22,19 +22,17 @@ empty =
 
 addStudent : Grade -> Student -> School -> School
 addStudent grade student school =
-    let
-        studentList =
-            List.sort <| student :: studentsInGrade grade school
-    in
-    Dict.insert grade studentList school
+    studentsInGrade grade school
+        |> (::) student
+        |> List.sort
+        |> (\students -> Dict.insert grade students school)
 
 
 studentsInGrade : Grade -> School -> List Student
-studentsInGrade grade school =
-    Dict.get grade school
-        |> Maybe.withDefault []
+studentsInGrade grade =
+    Dict.get grade >> Maybe.withDefault []
 
 
 allStudents : School -> List ( Grade, List Student )
-allStudents school =
-    Dict.toList school
+allStudents =
+    Dict.toList
