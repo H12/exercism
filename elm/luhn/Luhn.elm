@@ -7,7 +7,7 @@ valid input =
         condensedInput =
             String.replace " " "" input
     in
-    if String.length condensedInput <= 1 || String.any (not << Char.isDigit) condensedInput then
+    if validInput condensedInput then
         False
 
     else
@@ -18,6 +18,11 @@ valid input =
             |> List.indexedMap indexedLuhnDouble
             |> List.sum
             |> (\sum -> modBy 10 sum == 0)
+
+
+validInput : String -> Bool
+validInput input =
+    String.length input <= 1 || String.any (not << Char.isDigit) input
 
 
 indexedLuhnDouble : Int -> Int -> Int
