@@ -7,11 +7,12 @@ raindrops number =
         output =
             pling number ++ plang number ++ plong number
     in
-    if String.length output == 0 then
-        String.fromInt number
+    case output of
+        "" ->
+            String.fromInt number
 
-    else
-        output
+        _ ->
+            output
 
 
 pling : Int -> String
