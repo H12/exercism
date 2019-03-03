@@ -12,39 +12,75 @@ module ListOps exposing
 
 length : List a -> Int
 length list =
-    Debug.todo "Please implement this function"
+    case list of
+        [] ->
+            0
+
+        _ :: tail ->
+            1 + length tail
 
 
 reverse : List a -> List a
 reverse list =
-    Debug.todo "Please implement this function"
+    case list of
+        [] ->
+            []
+
+        head :: tail ->
+            reverse tail ++ [ head ]
 
 
 foldl : (a -> b -> b) -> b -> List a -> b
 foldl f acc list =
-    Debug.todo "Please implement this function"
+    case list of
+        [] ->
+            acc
+
+        head :: tail ->
+            foldl f (f head acc) tail
 
 
 foldr : (a -> b -> b) -> b -> List a -> b
 foldr f acc list =
-    Debug.todo "Please implement this function"
+    list |> reverse |> foldl f acc
 
 
 map : (a -> b) -> List a -> List b
 map f list =
-    Debug.todo "Please implement this function"
+    case list of
+        [] ->
+            []
+
+        head :: tail ->
+            head
+                |> f
+                |> (\mappedHead -> mappedHead :: map f tail)
 
 
 filter : (a -> Bool) -> List a -> List a
 filter f list =
-    Debug.todo "Please implement this function"
+    case list of
+        [] ->
+            []
+
+        head :: tail ->
+            if f head then
+                head :: filter f tail
+
+            else
+                filter f tail
 
 
 append : List a -> List a -> List a
 append xs ys =
-    Debug.todo "Please implement this function"
+    xs ++ ys
 
 
 concat : List (List a) -> List a
 concat list =
-    Debug.todo "Please implement this function"
+    case list of
+        [] ->
+            []
+
+        head :: tail ->
+            head ++ concat tail
