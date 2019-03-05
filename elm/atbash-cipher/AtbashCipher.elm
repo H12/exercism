@@ -1,24 +1,46 @@
 module AtbashCipher exposing (decode, encode)
 
 import Dict exposing (..)
+import Regex exposing (..)
 
 
 encode : String -> String
 encode plain =
     plain
         |> String.toLower
-        |> String.replace " " ""
-        |> String.map (mapChar cipherMap)
+        |> Regex.replace nonWordCharacter (\_ -> "")
+        |> String.map mapLetter
+        |> splitEvery 5
+        |> String.join " "
 
 
 decode : String -> String
 decode cipher =
-    Debug.todo "Please implement this function"
+    cipher
+        |> String.replace " " ""
+        |> String.map mapLetter
 
 
-mapChar : Dict Char Char -> Char -> Char
-mapChar charMap key =
-    Maybe.withDefault 'a' <| Dict.get key charMap
+nonWordCharacter : Regex
+nonWordCharacter =
+    Maybe.withDefault Regex.never <|
+        Regex.fromString "\\W"
+
+
+splitEvery : Int -> String -> List String
+splitEvery n input =
+    case input of
+        "" ->
+            []
+
+        _ ->
+            [ String.left n input ] ++ splitEvery n (String.dropLeft n input)
+
+
+mapLetter : Char -> Char
+mapLetter key =
+    Maybe.withDefault key <|
+        Dict.get key cipherMap
 
 
 cipherMap : Dict Char Char
