@@ -2,5 +2,6 @@ __pycache__
 elm-stuff
 node_modules
 .DS_STORE
+.exercism
 .solution.json
 .vscode
