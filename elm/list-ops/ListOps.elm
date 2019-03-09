@@ -27,7 +27,7 @@ reverse list =
             []
 
         head :: tail ->
-            reverse tail ++ [ head ]
+            foldl (::) [ head ] tail
 
 
 foldl : (a -> b -> b) -> b -> List a -> b
@@ -73,7 +73,16 @@ filter f list =
 
 append : List a -> List a -> List a
 append xs ys =
-    xs ++ ys
+    let
+        reversed =
+            reverse xs
+    in
+    case reversed of
+        [] ->
+            ys
+
+        last :: front ->
+            append (reverse front) (last :: ys)
 
 
 concat : List (List a) -> List a
@@ -83,4 +92,4 @@ concat list =
             []
 
         head :: tail ->
-            head ++ concat tail
+            append head <| concat tail
