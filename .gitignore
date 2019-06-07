@@ -1,6 +1,8 @@
 __pycache__
+bin
 elm-stuff
 node_modules
+obj
 .DS_STORE
 .exercism
 .solution.json
