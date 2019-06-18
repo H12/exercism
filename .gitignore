@@ -6,4 +6,5 @@ obj
 .DS_STORE
 .exercism
 .solution.json
+.stack-work
 .vscode
