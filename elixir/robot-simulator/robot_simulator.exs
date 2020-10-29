@@ -1,28 +1,33 @@
 defmodule RobotSimulator do
+  defguard valid_direction?(dir)
+           when is_atom(dir) and
+                  dir in [:north, :south, :east, :west]
+
+  defguard valid_position?(pos)
+           when is_tuple(pos) and
+                  tuple_size(pos) == 2 and
+                  is_integer(elem(pos, 0)) and
+                  is_integer(elem(pos, 1))
+
   @doc """
   Create a Robot Simulator given an initial direction and position.
 
   Valid directions are: `:north`, `:east`, `:south`, `:west`
   """
   @spec create(direction :: atom, position :: {integer, integer}) :: any
-  def create(direction \\ :north, position \\ {0, 0}) do
-    cond do
-      not valid_direction?(direction) -> {:error, "invalid direction"}
-      not valid_position?(position) -> {:error, "invalid position"}
-      true -> {direction, position}
-    end
-  end
+  def create(direction \\ :north, position \\ {0, 0})
 
-  defp valid_direction?(dir) do
-    is_atom(dir) and
-      Enum.member?([:north, :south, :east, :west], dir)
-  end
+  def create(direction, position)
+      when valid_direction?(direction) and valid_position?(position),
+      do: {direction, position}
 
-  defp valid_position?(pos) do
-    is_tuple(pos) and
-      tuple_size(pos) == 2 and
-      Enum.all?(Tuple.to_list(pos), &is_integer(&1))
-  end
+  def create(direction, _position)
+      when not valid_direction?(direction),
+      do: {:error, "invalid direction"}
+
+  def create(_direction, position)
+      when not valid_position?(position),
+      do: {:error, "invalid position"}
 
   @doc """
   Simulate the robot's movement given a string of instructions.
@@ -43,15 +48,9 @@ defmodule RobotSimulator do
 
   defp valid_instruction?(instruction), do: Enum.member?('RLA', instruction)
 
-  @doc """
-  Takes a robot and an integer representing a codepoint for either the
-  letter "R" (82), "L" (76), or "A", (65).
-  """
-  def move(robot, codepoint)
-
-  def move(robot, 82), do: turn_right(robot)
-  def move(robot, 76), do: turn_left(robot)
-  def move(robot, 65), do: advance(robot)
+  defp move(robot, ?R), do: turn_right(robot)
+  defp move(robot, ?L), do: turn_left(robot)
+  defp move(robot, ?A), do: advance(robot)
 
   defp turn_right({:north, pos}), do: {:east, pos}
   defp turn_right({:east, pos}), do: {:south, pos}
