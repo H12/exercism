@@ -27,29 +27,13 @@ defmodule ListOps do
 
   @spec map(list, (any -> any)) :: list
   def map(l, f) do
-    map(l, f, [])
+    for n <- l, do: f.(n)
   end
-
-  defp map([head | tail], f, mapped_list) do
-    map(tail, f, [f.(head) | mapped_list])
-  end
-
-  defp map([], _f, mapped_list), do: reverse(mapped_list)
 
   @spec filter(list, (any -> as_boolean(term))) :: list
   def filter(l, f) do
-    filter(l, f, [])
+    for n <- l, f.(n), do: n
   end
-
-  defp filter([hd | tail], f, filtered_list) do
-    if f.(hd) do
-      filter(tail, f, [hd | filtered_list])
-    else
-      filter(tail, f, filtered_list)
-    end
-  end
-
-  defp filter([], _f, filtered_list), do: reverse(filtered_list)
 
   @type acc :: any
   @spec reduce(list, acc, (any, acc -> acc)) :: acc
