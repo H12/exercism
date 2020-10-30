@@ -45,26 +45,11 @@ defmodule ListOps do
 
   @spec append(list, list) :: list
   def append(a, b) do
-    prepend_reversed(reverse(a), b) |> reverse
+    reduce(reverse(a), b, fn n, acc -> [n | acc] end)
   end
-
-  defp prepend_reversed(new_list, [head | tail]) do
-    prepend_reversed([head | new_list], tail)
-  end
-
-  defp prepend_reversed(new_list, []), do: new_list
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
-    concat(ll, [])
+    reduce(ll, [], &append(&2, &1))
   end
-
-  defp concat([head_list | tail_lists], concatenated_list) do
-    concat(
-      tail_lists,
-      prepend_reversed(concatenated_list, head_list)
-    )
-  end
-
-  defp concat([], concatenated_list), do: reverse(concatenated_list)
 end
