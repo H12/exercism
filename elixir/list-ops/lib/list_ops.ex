@@ -50,6 +50,6 @@ defmodule ListOps do
 
   @spec concat([[any]]) :: [any]
   def concat(ll) do
-    reduce(ll, [], &append(&2, &1))
+    reduce(ll, [], &append(reverse(&1), &2)) |> reverse
   end
 end
