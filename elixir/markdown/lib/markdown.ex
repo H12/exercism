@@ -46,10 +46,10 @@ defmodule Markdown do
   defp add_inline_tags(word) do
     word
     |> String.replace_prefix("___", "<em><strong>")
-    |> String.replace_prefix("__", "<strong>")
-    |> String.replace_prefix("_", "<em>")
     |> String.replace_suffix("___", "</strong></em>")
+    |> String.replace_prefix("__", "<strong>")
     |> String.replace_suffix("__", "</strong>")
+    |> String.replace_prefix("_", "<em>")
     |> String.replace_suffix("_", "</em>")
   end
 
