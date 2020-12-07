@@ -1,9 +1,14 @@
 defmodule Zipper do
+  defstruct [tree: nil]
+
+  @type t() :: %__MODULE__{}
+  
   @doc """
   Get a zipper focused on the root node.
   """
   @spec from_tree(BinTree.t()) :: Zipper.t()
   def from_tree(bin_tree) do
+    %__MODULE__{tree: bin_tree}
   end
 
   @doc """
@@ -11,6 +16,7 @@ defmodule Zipper do
   """
   @spec to_tree(Zipper.t()) :: BinTree.t()
   def to_tree(zipper) do
+    zipper.tree
   end
 
   @doc """
