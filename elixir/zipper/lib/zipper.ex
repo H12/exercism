@@ -11,6 +11,9 @@ defmodule Zipper do
     %__MODULE__{tree: bin_tree}
   end
 
+  defp maybe_from_tree(nil), do: nil
+  defp maybe_from_tree(bin_tree), do: from_tree(bin_tree)
+
   @doc """
   Get the complete tree from a zipper.
   """
@@ -24,6 +27,7 @@ defmodule Zipper do
   """
   @spec value(Zipper.t()) :: any
   def value(zipper) do
+    zipper.tree.value
   end
 
   @doc """
@@ -31,6 +35,8 @@ defmodule Zipper do
   """
   @spec left(Zipper.t()) :: Zipper.t() | nil
   def left(zipper) do
+    zipper.tree.left
+    |> maybe_from_tree
   end
 
   @doc """
@@ -38,6 +44,8 @@ defmodule Zipper do
   """
   @spec right(Zipper.t()) :: Zipper.t() | nil
   def right(zipper) do
+    zipper.tree.right
+    |> maybe_from_tree
   end
 
   @doc """
