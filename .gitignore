@@ -8,3 +8,5 @@ obj
 .solution.json
 .stack-work
 .vscode
+*.swp
+
