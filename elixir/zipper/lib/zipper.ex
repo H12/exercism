@@ -1,8 +1,8 @@
 defmodule Zipper do
-  defstruct [tree: nil]
+  defstruct tree: nil, history: []
 
   @type t() :: %__MODULE__{}
-  
+
   @doc """
   Get a zipper focused on the root node.
   """
@@ -10,9 +10,6 @@ defmodule Zipper do
   def from_tree(bin_tree) do
     %__MODULE__{tree: bin_tree}
   end
-
-  defp maybe_from_tree(nil), do: nil
-  defp maybe_from_tree(bin_tree), do: from_tree(bin_tree)
 
   @doc """
   Get the complete tree from a zipper.
@@ -22,12 +19,24 @@ defmodule Zipper do
     zipper.tree
   end
 
+  defp get_focus(zipper) do
+    zipper.history
+    |> Enum.reverse()
+    |> Enum.reduce(zipper.tree, &Map.get(&2, &1))
+  end
+
+  defp traversal_path(zipper) do
+    zipper.history
+    |> Enum.reverse()
+    |> Enum.map(&Access.key/1)
+  end
+
   @doc """
   Get the value of the focus node.
   """
   @spec value(Zipper.t()) :: any
   def value(zipper) do
-    zipper.tree.value
+    get_focus(zipper).value
   end
 
   @doc """
@@ -35,8 +44,11 @@ defmodule Zipper do
   """
   @spec left(Zipper.t()) :: Zipper.t() | nil
   def left(zipper) do
-    zipper.tree.left
-    |> maybe_from_tree
+    if get_focus(zipper).left == nil do
+      nil
+    else
+      %__MODULE__{tree: zipper.tree, history: [:left | zipper.history]}
+    end
   end
 
   @doc """
@@ -44,15 +56,23 @@ defmodule Zipper do
   """
   @spec right(Zipper.t()) :: Zipper.t() | nil
   def right(zipper) do
-    zipper.tree.right
-    |> maybe_from_tree
+    if get_focus(zipper).right == nil do
+      nil
+    else
+      %__MODULE__{tree: zipper.tree, history: [:right | zipper.history]}
+    end
   end
 
   @doc """
   Get the parent of the focus node, if any.
   """
   @spec up(Zipper.t()) :: Zipper.t() | nil
+  def up(zipper)
+
+  def up(%__MODULE__{tree: tree, history: []}), do: nil
+
   def up(zipper) do
+    Map.put(zipper, :history, tl(zipper.history))
   end
 
   @doc """
@@ -60,6 +80,7 @@ defmodule Zipper do
   """
   @spec set_value(Zipper.t(), any) :: Zipper.t()
   def set_value(zipper, value) do
+    update_focus(zipper, :value, value)
   end
 
   @doc """
@@ -67,6 +88,7 @@ defmodule Zipper do
   """
   @spec set_left(Zipper.t(), BinTree.t() | nil) :: Zipper.t()
   def set_left(zipper, left) do
+    update_focus(zipper, :left, left)
   end
 
   @doc """
@@ -74,5 +96,20 @@ defmodule Zipper do
   """
   @spec set_right(Zipper.t(), BinTree.t() | nil) :: Zipper.t()
   def set_right(zipper, right) do
+    update_focus(zipper, :right, right)
   end
+
+  defp update_focus(zipper, key, value) do
+    new_focus =
+      zipper
+      |> get_focus()
+      |> Map.put(key, value)
+
+    new_tree = update_tree(zipper.tree, traversal_path(zipper), new_focus)
+
+    Map.put(zipper, :tree, new_tree)
+  end
+
+  defp update_tree(tree, [], sub_tree), do: sub_tree
+  defp update_tree(tree, path, sub_tree), do: put_in(tree, path, sub_tree)
 end
