@@ -44,10 +44,11 @@ defmodule Zipper do
   """
   @spec left(Zipper.t()) :: Zipper.t() | nil
   def left(zipper) do
-    if get_focus(zipper).left == nil do
-      nil
-    else
+    with %BinTree{left: left} <- get_focus(zipper),
+         %BinTree{} <- left do
       %__MODULE__{tree: zipper.tree, history: [:left | zipper.history]}
+    else
+      _ -> nil
     end
   end
 
@@ -56,10 +57,11 @@ defmodule Zipper do
   """
   @spec right(Zipper.t()) :: Zipper.t() | nil
   def right(zipper) do
-    if get_focus(zipper).right == nil do
-      nil
-    else
+    with %BinTree{right: right} <- get_focus(zipper),
+         %BinTree{} <- right do
       %__MODULE__{tree: zipper.tree, history: [:right | zipper.history]}
+    else
+      _ -> nil
     end
   end
 
