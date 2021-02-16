@@ -4,25 +4,18 @@ import (
 	"errors"
 )
 
-func minDiff(a, b int) (int, int) {
-	if a < b {
-		return a, b - a
-	}
-	return b, a - b
-}
-
 func Distance(a, b string) (int, error) {
-	min, diff := minDiff(len(a), len(b))
-
-	if diff != 0 {
-		return 0, errors.New("error")
+	if len(a) != len(b) {
+		return 0, errors.New("provided strings do not have same length")
 	}
 
-	for i := 0; i < min; i++ {
+	count := 0
+
+	for i := 0; i < len(a); i++ {
 		if a[i] != b[i] {
-			diff = diff + 1
+			count++
 		}
 	}
 
-	return diff, nil
+	return count, nil
 }
