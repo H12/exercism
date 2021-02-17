@@ -28,6 +28,12 @@ var testCases = []struct {
 		1,
 		false,
 	},
+	{ // single letter utf-8 characters
+		"Ŭ",
+		"G",
+		1,
+		false,
+	},
 	{ // long identical strands
 		"GGACTGAAATCTG",
 		"GGACTGAAATCTG",
