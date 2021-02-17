@@ -28,9 +28,9 @@ var testCases = []struct {
 		1,
 		false,
 	},
-	{ // single letter utf-8 characters
-		"Ŭ",
-		"G",
+	{ // utf-8 characters
+		"ŬGŬ",
+		"GGŬ",
 		1,
 		false,
 	},

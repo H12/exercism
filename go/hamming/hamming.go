@@ -1,22 +1,19 @@
 package hamming
 
-import (
-	"errors"
-	"unicode/utf8"
-)
+import "errors"
 
 func Distance(a, b string) (int, error) {
-	len1 := utf8.RuneCountInString(a)
-	len2 := utf8.RuneCountInString(b)
+	rune1 := []rune(a)
+	rune2 := []rune(b)
 
-	if len1 != len2 {
+	if len(rune1) != len(rune2) {
 		return 0, errors.New("provided strings do not have same length")
 	}
 
 	count := 0
 
-	for i := 0; i < len1; i++ {
-		if a[i] != b[i] {
+	for i := 0; i < len(rune2); i++ {
+		if rune1[i] != rune2[i] {
 			count++
 		}
 	}
