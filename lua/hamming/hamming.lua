@@ -1,17 +1,16 @@
 local Hamming = {}
 
 function Hamming.compute(a,b)
-	if string.len(a) ~= string.len(b) then return -1 end
+	if a:len() ~= b:len() then return -1 end
 
-	local count = 0
-
-	for i=1,string.len(a) do
-		if string.sub(a, i, i) ~= string.sub(b, i, i) then
-			count = count + 1
+	local dist = 0
+	for i=1,a:len() do
+		if a:sub(i, i) ~= b:sub(i, i) then
+			dist = dist + 1
 		end
 	end
 
-	return count
+	return dist
 end
 
 return Hamming
