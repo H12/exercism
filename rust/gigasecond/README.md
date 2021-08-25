@@ -5,7 +5,9 @@ has passed.
 
 A gigasecond is 10^9 (1,000,000,000) seconds.
 
-If you're unsure what operations you can perform on `DateTime<Utc>` take a look at the [chrono crate](https://docs.rs/chrono) which is listed as a dependency in the `Cargo.toml` file for this exercise.
+If you're unsure what operations you can perform on `DateTime<Utc>` take a look
+at the [chrono crate](https://docs.rs/chrono) which is listed as a dependency in
+the `Cargo.toml` file for this exercise.
 
 
 ## Rust Installation
@@ -21,10 +23,11 @@ Execute the tests with:
 $ cargo test
 ```
 
-All but the first test have been ignored. After you get the first test to
-pass, open the tests source file which is located in the `tests` directory
-and remove the `#[ignore]` flag from the next test and get the tests to pass
-again. Each separate test is a function with `#[test]` flag above it.
+All but the first test have been ignored. After you get the first test to pass,
+open the tests source file which is located in the `tests` directory and remove
+the `#[ignore]` flag from the next test and get the tests to pass again. Each
+separate test is a function with `#[test]` flag above it.
+
 Continue, until you pass every test.
 
 If you wish to run all ignored tests without editing the tests source file, use:
@@ -45,14 +48,18 @@ If the specific test is ignored use:
 $ cargo test some_test -- --ignored
 ```
 
-To learn more about Rust tests refer to the [online test documentation][rust-tests]
+To learn more about Rust tests refer to the [online test
+documentation][rust-tests]
 
-Make sure to read the [Modules][modules] chapter if you
-haven't already, it will help you with organizing your files.
+Make sure to read the [Modules][modules] chapter if you haven't already, it will
+help you with organizing your files.
 
 ## Further improvements
 
-After you have solved the exercise, please consider using the additional utilities, described in the [installation guide](https://exercism.io/tracks/rust/installation), to further refine your final solution.
+After you have solved the exercise, please consider using the additional
+utilities, described in the [installation
+guide](https://exercism.io/tracks/rust/installation), to further refine your
+final solution.
 
 To format your solution, inside the solution directory use
 
@@ -60,7 +67,8 @@ To format your solution, inside the solution directory use
 cargo fmt
 ```
 
-To see, if your solution contains some common ineffective use cases, inside the solution directory use
+To see, if your solution contains some common ineffective use cases, inside the
+solution directory use
 
 ```bash
 cargo clippy --all-targets
@@ -68,13 +76,20 @@ cargo clippy --all-targets
 
 ## Submitting the solution
 
-Generally you should submit all files in which you implemented your solution (`src/lib.rs` in most cases). If you are using any external crates, please consider submitting the `Cargo.toml` file. This will make the review process faster and clearer.
+Generally you should submit all files in which you implemented your solution
+(`src/lib.rs` in most cases). If you are using any external crates, please
+consider submitting the `Cargo.toml` file. This will make the review process
+faster and clearer.
 
 ## Feedback, Issues, Pull Requests
 
-The [exercism/rust](https://github.com/exercism/rust) repository on GitHub is the home for all of the Rust exercises. If you have feedback about an exercise, or want to help implement new exercises, head over there and create an issue. Members of the rust track team are happy to help!
+The [exercism/rust](https://github.com/exercism/rust) repository on GitHub is
+the home for all of the Rust exercises. If you have feedback about an exercise,
+or want to help implement new exercises, head over there and create an issue.
+Members of the rust track team are happy to help!
 
-If you want to know more about Exercism, take a look at the [contribution guide](https://github.com/exercism/docs/blob/main/contributing-to-language-tracks/README.md).
+If you want to know more about Exercism, take a look at the [contribution
+guide](https://github.com/exercism/docs/blob/main/contributing-to-language-tracks/README.md).
 
 [help-page]: https://exercism.io/tracks/rust/learning
 [modules]: https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html
@@ -83,7 +98,10 @@ If you want to know more about Exercism, take a look at the [contribution guide]
 
 ## Source
 
-Chapter 9 in Chris Pine's online Learn to Program tutorial. [http://pine.fm/LearnToProgram/?Chapter=09](http://pine.fm/LearnToProgram/?Chapter=09)
+Chapter 9 in Chris Pine's online Learn to Program tutorial.
+[http://pine.fm/LearnToProgram/?Chapter=09](http://pine.fm/LearnToProgram/?Chapter=09)
 
 ## Submitting Incomplete Solutions
-It's possible to submit an incomplete solution so you can see how others have completed the exercise.
+
+It's possible to submit an incomplete solution so you can see how others have
+completed the exercise.
