@@ -9,4 +9,5 @@ obj
 .stack-work
 .vscode
 *.swp
+tests.out*
 
