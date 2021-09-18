@@ -1,5 +1,5 @@
-#include "vendor/unity.h"
-#include "../src/armstrong_numbers.h"
+#include "test-framework/unity.h"
+#include "armstrong_numbers.h"
 
 void setUp(void)
 {
@@ -64,7 +64,7 @@ static void test_seven_digit_number_that_is_not_an_armstrong_number(void)
 
 int main(void)
 {
-   UnityBegin("test/test_armstrong_numbers.c");
+   UnityBegin("test_armstrong_numbers.c");
 
    RUN_TEST(test_zero_is_an_armstrong_number);
    RUN_TEST(test_single_digit_numbers_are_armstrong_numbers);
