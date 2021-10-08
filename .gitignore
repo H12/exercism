@@ -10,4 +10,7 @@ obj
 .vscode
 *.swp
 tests.out*
+.dart_tool/
+.packages
+build/
 
