@@ -13,4 +13,4 @@ tests.out*
 .dart_tool/
 .packages
 build/
-
+*.vim
