@@ -30,7 +30,7 @@ defmodule PokerTest do
     assert_poker(winning_hands, [high_of_jack])
   end
 
-  @tag :pending
+  # @tag :pending
   test "highest card out of all hands wins" do
     high_of_8 = ~w(4D 5S 6S 8D 3C)
     high_of_10 = ~w(2S 4C 7S 9H 10H)
@@ -39,7 +39,7 @@ defmodule PokerTest do
     assert_poker(winning_hands, [high_of_jack])
   end
 
-  @tag :pending
+  # @tag :pending
   test "a tie has multiple winners" do
     high_of_8 = ~w(4D 5S 6S 8D 3C)
     high_of_10 = ~w(2S 4C 7S 9H 10H)

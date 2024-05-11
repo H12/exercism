@@ -27,7 +27,85 @@ defmodule Poker do
 
   Example hand: ~w(4S 5H 4C 5D 4H) # Full house, 5s over 4s
   """
+
+  @rank_map %{
+    "2" => 1,
+    "3" => 2,
+    "4" => 3,
+    "5" => 4,
+    "6" => 5,
+    "7" => 6,
+    "8" => 7,
+    "9" => 8,
+    "10" => 9,
+    "J" => 10,
+    "Q" => 11,
+    "K" => 12,
+    "A" => 13
+  }
+
   @spec best_hand(list(list(String.t()))) :: list(list(String.t()))
   def best_hand(hands) do
+    [first_hand | remaining_hands] = hands
+
+    best_hand(remaining_hands, [first_hand])
+  end
+
+  def best_hand([], best_hands), do: best_hands
+
+  def best_hand(hands, winning_hands) do
+    [high_hand | _] = winning_hands
+    [next_hand | remaining_hands] = hands
+
+    case compare(high_hand, next_hand) do
+      :gt -> best_hand(remaining_hands, [high_hand])
+      :lt -> best_hand(remaining_hands, [next_hand])
+      :eq -> best_hand(remaining_hands, [next_hand | winning_hands])
+    end
+  end
+
+  def pair?(hand) do
+    hand
+    |> Enum.frequencies_by(&rank/1)
+  end
+
+  def compare(hand_a, hand_b) do
+    ranked_hand_a =
+      hand_a
+      |> Enum.frequencies_by(&rank/1)
+
+    ranked_hand_b =
+      hand_b
+      |> Enum.frequencies_by(&rank/1)
+
+    compare_ranked(ranked_hand_a, ranked_hand_b)
+  end
+
+  def compare_ranked(hand_a, hand_b) do
+    sorted_hand_a =
+      hand_a
+      |> Map.keys()
+      |> Enum.map(&Map.get(@rank_map, &1))
+      |> Enum.sort()
+
+    sorted_hand_b =
+      hand_b
+      |> Map.keys()
+      |> Enum.map(&Map.get(@rank_map, &1))
+      |> Enum.sort()
+
+    if sorted_hand_a == sorted_hand_b do
+      :eq
+    else
+      case sorted_hand_a > sorted_hand_b do
+        true -> :gt
+        false -> :lt
+      end
+    end
+  end
+
+  defp rank(card) do
+    {rank, _suit} = String.split_at(card, -1)
+    rank
   end
 end
