@@ -1,5 +1,10 @@
+import gleam/result
+import gleam/string
+
 pub fn first_letter(name: String) {
-  todo
+  name
+  |> string.first
+  |> result.unwrap("")
 }
 
 pub fn initial(name: String) {
