@@ -1,10 +1,12 @@
 import gleam/dict.{type Dict}
+import gleam/option.{type Option, None, Some}
 
 pub type ScoreBoard =
   Dict(String, Int)
 
 pub fn create_score_board() -> ScoreBoard {
-  todo
+  dict.new()
+  |> dict.insert("The Best Ever", 1_000_000)
 }
 
 pub fn add_player(
@@ -12,11 +14,11 @@ pub fn add_player(
   player: String,
   score: Int,
 ) -> ScoreBoard {
-  todo
+  dict.insert(into: score_board, for: player, insert: score)
 }
 
 pub fn remove_player(score_board: ScoreBoard, player: String) -> ScoreBoard {
-  todo
+  dict.delete(from: score_board, delete: player)
 }
 
 pub fn update_score(
@@ -24,9 +26,14 @@ pub fn update_score(
   player: String,
   points: Int,
 ) -> ScoreBoard {
-  todo
+  case dict.get(score_board, player) {
+    Ok(score) -> dict.insert(score_board, player, score + points)
+    Error(_) -> score_board
+  }
 }
 
 pub fn apply_monday_bonus(score_board: ScoreBoard) -> ScoreBoard {
-  todo
+  dict.map_values(score_board, fn(_player: String, score: Int) -> Int {
+    score + 100
+  })
 }
