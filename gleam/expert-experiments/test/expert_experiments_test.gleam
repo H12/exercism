@@ -65,12 +65,13 @@ pub fn with_retry_fail_pass_test() {
 
 pub fn record_timing_pass_test() {
   let #(writer, reader) = logger()
-  {
-    use <- expert_experiments.record_timing(fn() { writer("timer") })
-    writer("experiment")
-    Ok(0)
-  }
-  |> should.equal(Ok(0))
+  let _ =
+    {
+      use <- expert_experiments.record_timing(fn() { writer("timer") })
+      writer("experiment")
+      Ok(0)
+    }
+    |> should.equal(Ok(0))
 
   reader()
   |> should.equal(["timer", "experiment", "timer"])
@@ -78,12 +79,13 @@ pub fn record_timing_pass_test() {
 
 pub fn record_timing_fail_test() {
   let #(writer, reader) = logger()
-  {
-    use <- expert_experiments.record_timing(fn() { writer("timer") })
-    writer("experiment")
-    Error(Nil)
-  }
-  |> should.equal(Error(Nil))
+  let _ =
+    {
+      use <- expert_experiments.record_timing(fn() { writer("timer") })
+      writer("experiment")
+      Error(Nil)
+    }
+    |> should.equal(Error(Nil))
 
   reader()
   |> should.equal(["timer", "experiment", "timer"])
