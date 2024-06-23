@@ -1,6 +1,7 @@
 import gleam/dict.{type Dict}
 import gleam/int
 import gleam/list
+import gleam/pair
 import gleam/result
 import gleam/string
 
@@ -46,21 +47,51 @@ pub fn format_stack(f: Forth) -> String {
   }
 }
 
+pub fn format_words(f: Forth) -> String {
+  f.words
+  |> dict.to_list
+  |> list.map(pair.first)
+  |> string.join(" ")
+}
+
 pub fn eval(f: Forth, prog: String) -> Result(Forth, ForthError) {
-  case f, prog {
-    Forth(stack, words), "" -> Ok(Forth(stack, words))
-    Forth(stack, words), _ -> {
+  case prog {
+    "" -> Ok(f)
+    ":" <> rest -> {
+      let #(definition, rem) =
+        rest
+        |> string.trim
+        |> string.split_once(";")
+        |> result.unwrap(#("", ""))
+
+      let #(new_word, words_str) =
+        definition
+        |> string.split_once(" ")
+        |> result.unwrap(#("", ""))
+
+      let words =
+        words_str
+        |> string.trim
+        |> string.split(" ")
+        |> list.map(string.uppercase)
+
+      case int.parse(new_word) {
+        Ok(_) -> Error(InvalidWord)
+        _ ->
+          eval(define_word(f, new_word, build_custom_operator(f, words)), rem)
+      }
+    }
+    _ -> {
       let #(entry_str, prog_rem) =
         prog
         |> string.split_once(" ")
         |> result.unwrap(#(prog, ""))
 
       entry_str
-      |> string.uppercase
       |> parse_entry(f, _)
       |> result.try(fn(entry) {
         case entry {
-          Value(num) -> eval(Forth([num, ..stack], words), prog_rem)
+          Value(num) -> eval(Forth([num, ..f.stack], f.words), prog_rem)
           Word(op) -> result.try(op(f), fn(next) { eval(next, prog_rem) })
         }
       })
@@ -71,7 +102,7 @@ pub fn eval(f: Forth, prog: String) -> Result(Forth, ForthError) {
 fn define_word(f: Forth, word: String, op: Operator) -> Forth {
   Forth(
     stack: f.stack,
-    words: dict.insert(insert: op, into: f.words, for: word),
+    words: dict.insert(insert: op, into: f.words, for: string.uppercase(word)),
   )
 }
 
@@ -85,7 +116,7 @@ fn get_word(f: Forth, entry: String) -> Result(Entry, ForthError) {
 fn parse_entry(f: Forth, entry: String) -> Result(Entry, ForthError) {
   case int.parse(entry) {
     Ok(num) -> Ok(Value(num))
-    _ -> get_word(f, entry)
+    _ -> get_word(f, string.uppercase(entry))
   }
 }
 
@@ -143,5 +174,19 @@ fn over(f: Forth) -> Result(Forth, ForthError) {
   case f {
     Forth([a, b, ..rest], words) -> Ok(Forth([b, a, b, ..rest], words))
     _ -> Error(StackUnderflow)
+  }
+}
+
+fn build_custom_operator(f: Forth, words: List(String)) -> Operator {
+  let word_results = list.map(words, parse_entry(f, _))
+
+  fn(f: Forth) {
+    list.try_fold(word_results, f, fn(f, word) {
+      case word {
+        Ok(Value(num)) -> Ok(Forth([num, ..f.stack], f.words))
+        Ok(Word(op)) -> op(f)
+        _ -> Error(UnknownWord)
+      }
+    })
   }
 }
